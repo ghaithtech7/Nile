@@ -20,9 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DbSchema\" />
     <Folder Include="ExtentionModule\" />
-    <Folder Include="Interceptor\" />
+    <Folder Include="ThirdParty\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nile.Domain\Nile.Domain.csproj" />
   </ItemGroup>
 
 </Project>
