@@ -11,7 +11,7 @@ namespace Nile.Domain.EntityModel
         public DateTime CheckoutDate { get; set; }
 
         public int? UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public virtual Payment Payment { get; set; }
 

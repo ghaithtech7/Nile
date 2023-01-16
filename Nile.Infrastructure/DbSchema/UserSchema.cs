@@ -8,7 +8,7 @@ namespace Nile.Infrastructure.DbSchema
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-          
+            
         }
     }
 }

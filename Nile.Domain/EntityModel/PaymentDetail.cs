@@ -15,6 +15,6 @@ namespace Nile.Domain.EntityModel
         public int CCV { get; set; }
 
         public int? UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

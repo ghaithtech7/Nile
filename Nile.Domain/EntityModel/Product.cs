@@ -13,7 +13,7 @@ namespace Nile.Domain.EntityModel
         public int Qty { get; set; }
 
         public int? FileId { get; set; }
-        public virtual ContentFile ContentFile { get; set; }
+        public virtual ContentFile? ContentFile { get; set; }
 
         public List<ProductsOfOrder> ProductsOfOrders { get; set; }
         public List<ProductsOfCartOrder> ProductsOfCartOrders { get; set; }

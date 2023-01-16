@@ -8,7 +8,7 @@ namespace Nile.Domain.EntityModel
         public decimal TotalPrice { get; set; }
 
         public int? Id { get; set; }
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public List<ProductsOfCartOrder> ProductsOfCartOrders { get; set; }
     }

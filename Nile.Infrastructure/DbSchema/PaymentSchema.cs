@@ -9,8 +9,8 @@ namespace Nile.Infrastructure.DbSchema
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            /*builder.HasOne(x => x.Order).WithOne(x => x.Payment);
-            builder.HasOne(x => x.User).WithOne(x => x.Payment);*/
+            builder.HasOne(x => x.Order).WithOne(x => x.Payment);
+            builder.HasOne(x => x.User).WithOne(x => x.Payment);
         }
     }
 }
