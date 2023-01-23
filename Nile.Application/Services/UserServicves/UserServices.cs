@@ -113,13 +113,11 @@ namespace Nile.Application.UserServicves
                 };
                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
                 SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-                /*string jwtToken = tokenHandler.WriteToken(token);*/
                 string stringToken = tokenHandler.WriteToken(token);
 
                 object result = new
                 {
-                    name = string.Concat(user.FirstName, " ", user.LastName),
-                    userId = user.UserId,
+                    userDetails = user,
                     token = stringToken,
                     expiration = token.ValidTo
                 };
@@ -136,7 +134,14 @@ namespace Nile.Application.UserServicves
         {
             try
             {
-                User? user = _context.Users.AsNoTracking().Where(x => x.Email == email).FirstOrDefault();
+                User? user = _context.Users.AsNoTracking().Where(x => x.Email == email)
+                    .Include(x => x.UserRoles)
+                    .Include(x => x.Orders)
+                    .Include(x => x.CartOrders)
+                    .Include(x => x.Payment)
+                    .Include(x => x.PaymentDetails)
+                    .Include(x => x.ShippingDetails)
+                    .FirstOrDefault();
                 return user;
             }
             catch (Exception)
