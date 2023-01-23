@@ -8,16 +8,13 @@
 
   <ItemGroup>
     <Folder Include="ExtentionModule\" />
-    <Folder Include="Services\ContentFileServices\" />
-    <Folder Include="Services\CartServices\" />
-    <Folder Include="Services\OrderServices\" />
-    <Folder Include="Services\PeymentServices\" />
-    <Folder Include="Services\ProductServices\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />

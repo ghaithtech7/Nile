@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel.DataAnnotations;
+using static Nile.Domain.Enums.Enums;
 
 namespace Nile.Domain.EntityModel
 {
@@ -9,7 +9,7 @@ namespace Nile.Domain.EntityModel
     {
         [Key]
         public int RoleId { get; set; }
-        public string RoleName { get; set; }
+        public EnumRoles RoleName { get; set; }
         public string RoleDescription { get; set; }
 
         public List<UserRole> UserRoles { get; set; }

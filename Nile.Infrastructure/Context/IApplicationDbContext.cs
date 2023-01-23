@@ -7,6 +7,8 @@ namespace Nile.Infrastructure.Context
     {
         #region DbSetEntities
         DbSet<User> Users { get; set; }
+        DbSet<UserRole> UserRoles { get; set; }
+        DbSet<Role> Roles { get; set; }
         DbSet<ContentFile> ContentFiles { get; set; }
         DbSet<Order> Orders { get; set; }
         DbSet<Payment> Payments { get; set; }

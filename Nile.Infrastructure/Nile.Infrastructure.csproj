@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="ExtentionModule\" />
+    <Folder Include="Migrations\" />
     <Folder Include="ThirdParty\" />
   </ItemGroup>
 

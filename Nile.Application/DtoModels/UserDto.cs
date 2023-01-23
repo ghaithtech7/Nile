@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static Nile.Domain.Enums.Enums;
 
 namespace Nile.Application.DtoModels
 {
@@ -41,5 +42,17 @@ namespace Nile.Application.DtoModels
         [Phone]
         public string PhoneNumber { get; set; }
 
+    }
+
+    public class UserRoleDto
+    {
+        public EnumRoles RoleName { get; set; }
+        public string? Description { get; set; }
+    }
+
+    public class UpdateRoleDto
+    {
+        public EnumRoles RoleName { get; set; }
+        public int UserId { get; set; }
     }
 }

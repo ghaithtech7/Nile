@@ -1,14 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Nile.Application.Command.UserCommand;
 using Nile.Application.DtoModels;
-using Nile.Application.Query.ForUser;
+using Nile.Application.UserApplication.Commands;
+using Nile.Application.UserApplication.Queries;
+using Nile.Application.UserApp.Commands;
 using Nile.Domain.EntityModel;
+using System.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Nile.Application.Controllers
 {
     [Route("api/[Controller]")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IMediator _mediatR;
@@ -22,7 +26,8 @@ namespace Nile.Application.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginCredintials(string email, string password)
         {
-            LoginCredentialQuery query = new LoginCredentialQuery(email, password);
+            string windowsAuth = HttpContext.User.Identity.Name;
+            LoginCredentialQuery query = new LoginCredentialQuery(email, password, windowsAuth);
             var result = _mediatR.Send(query);
             if(result == null)
             {
@@ -31,6 +36,7 @@ namespace Nile.Application.Controllers
             return Ok(result);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
@@ -43,7 +49,7 @@ namespace Nile.Application.Controllers
         public async Task<IActionResult> GetUserById(int userId)
         {
             GetUserByIdQuery query = new GetUserByIdQuery(userId);
-            UserBasicDto? result = await _mediatR.Send(query);
+            var result = await _mediatR.Send(query);
             return result != null ? Ok(result) : NotFound();
         }
 
@@ -55,7 +61,7 @@ namespace Nile.Application.Controllers
         }
         #endregion
 
-        #region Post
+        #region Add
         [HttpPost("CreateUser")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
@@ -66,6 +72,15 @@ namespace Nile.Application.Controllers
                 return Ok(result);
             }
             return Ok("Password Not Match");
+        }
+
+        [HttpPost("AddRole")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddRole([FromBody] UserRoleDto model)
+        {
+            AddUserRoleCommand data = new AddUserRoleCommand(model.RoleName, model.Description);
+            var result = _mediatR.Send(data);
+            return Ok(result);
         }
         #endregion
 
@@ -80,6 +95,18 @@ namespace Nile.Application.Controllers
                 return Ok(result);
             }
             return BadRequest("Nothing Deleted");
+        }
+        #endregion
+
+        #region Update
+        [HttpPost("UpdateUserRole")]
+        public async Task<IActionResult> UpdateUserRole([FromBody] UpdateRoleDto data)
+        {
+            UpdateUserRoleCommand command = new UpdateUserRoleCommand(
+                data.UserId, data.RoleName
+                );
+            var result = await _mediatR.Send(command);
+            return Ok(result);
         }
         #endregion
     }

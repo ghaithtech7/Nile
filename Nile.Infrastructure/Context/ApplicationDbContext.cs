@@ -6,6 +6,10 @@ namespace Nile.Infrastructure.Context
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions options)
         : base(options)
         {
@@ -14,6 +18,8 @@ namespace Nile.Infrastructure.Context
 
         #region DbSetEntities
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<ContentFile> ContentFiles { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -23,7 +29,7 @@ namespace Nile.Infrastructure.Context
         public DbSet<PaymentDetail> PaymentDetails { get; set; }
         public DbSet<CartOrder> CartOrders { get; set; }
         public DbSet<ProductsOfCartOrder> ProductsOfCarts { get; set; }
-
+        
         public int SaveChanges()
         {
             int number = this.SaveChanges(true);
@@ -54,8 +60,11 @@ namespace Nile.Infrastructure.Context
             });
             builder.Entity<UserRole>(entity =>
             {
-                entity.HasKey(x => x.UserId);
-                entity.HasKey(x => x.RoleId);
+                entity.HasKey(x => x.UserRoleId);
+                entity.HasOne(x => x.User).WithMany(x => x.UserRoles)
+                    .HasForeignKey(x => x.UserId);
+                entity.HasOne(x => x.Role).WithMany(x => x.UserRoles)
+                    .HasForeignKey(x => x.RoleId);
             });
         }
     }

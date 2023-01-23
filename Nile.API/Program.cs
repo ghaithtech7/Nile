@@ -7,10 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Nile.Application.AutoMapper;
-using Nile.Application.Handler.QueryHandler.ForUser;
+using Nile.Application.UserApplication.EventHandler.QueryHandler;
 using Nile.Application.UserServicves;
 using Nile.Infrastructure.Context;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +21,10 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(swagger =>
 {
-    swagger.SwaggerDoc("v1", new OpenApiInfo { Title="dotnetClaimAuthorization", Version="v1"});
+    swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnetClaimAuthorization", Version = "v1" });
     swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -32,66 +34,64 @@ builder.Services.AddSwaggerGen(swagger =>
         BearerFormat = "JWT",
         Scheme = "bearer"
     });
-    swagger
-    .AddSecurityRequirement(new OpenApiSecurityRequirement{
+    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement{
         { new OpenApiSecurityScheme
-        {
-            Reference = new OpenApiReference
             {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-            }
-        },
-        new string[] { } }
-        });
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string> { }
+        }
+    });
 });
-/*new OpenApiSecurityScheme
-{
-    Reference = new OpenApiReference
-    {
-        Type = ReferenceType.SecurityScheme,
-        Id = "Bearer"
-    }
-},
-new string[] { }*/
-builder.Services.AddDbContext<ApplicationDbContext>(opt => 
-    opt.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-        ));
 
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+/*builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
-/*builder.Services.AddMediatR(typeof(Program).GetType().Assembly);
 */
-builder.Services.AddMediatR(typeof(GetUsersHandler));
-builder.Services.AddScoped<Mediator>();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
-                ),
-            ValidateIssuer = true,
+            ValidateIssuer   = true,
             ValidateAudience = true,
-            ValidateLifetime = false,
-            ValidateIssuerSigningKey = true
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer      = builder.Configuration["Jwt:Issuer"],
+            ValidAudience    = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                               Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
-builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddAutoMapper(typeof(MapperProfile));
 
-builder.Services.AddAuthorization(options =>
+
+builder.Services.AddDbContext<ApplicationDbContext>(opt => 
+    opt.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+        ));
+
+/*builder.Services.AddAuthorization(options =>
 {
     // By default, all incoming requests will be authorized according to the default policy.
     options.FallbackPolicy = options.DefaultPolicy;
 });
+*/
+builder.Services.AddMediatR(typeof(GetUsersHandler));
+builder.Services.AddScoped<Mediator>();
+
+
+builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+
+builder.Services.AddAutoMapper(typeof(MapperProfile));
+
 
 var app = builder.Build();
 
