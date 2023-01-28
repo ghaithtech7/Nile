@@ -6,7 +6,7 @@ namespace Nile.Application.Services.ProductServices
     {
         Task<Product> GetProductById(int productId);
         Task<List<Product>> GetAllProducts();
-        Task<int> DeleteProduct(Product product);
+        Task<int> DeleteProduct(int productId);
         Task<Product> CreateProduct(Product product);
         Task UpdateProduct(Product product);
     }

@@ -22,6 +22,21 @@ namespace Nile.Application.AutoMapper
             CreateMap<Role, UserRoleDto>();
             CreateMap<UserRoleDto, Role>();
             #endregion
+
+            #region Cart
+            CreateMap<CartOrder, CartOrderDto>();
+            CreateMap<CartOrderDto, CartOrder>();
+            #endregion
+
+            #region Product
+            CreateMap<CreateProductDto, Product>();
+            CreateMap<Product, CreateProductDto>();
+            #endregion
+
+            #region Order
+            CreateMap<AddOrderDto, Order>();
+            CreateMap<Order, AddOrderDto>();
+            #endregion
         }
     }
 }

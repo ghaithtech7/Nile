@@ -28,8 +28,8 @@ namespace Nile.Infrastructure.Context
         public DbSet<ShippingDetail> ShippingDetails { get; set; }
         public DbSet<PaymentDetail> PaymentDetails { get; set; }
         public DbSet<CartOrder> CartOrders { get; set; }
-        public DbSet<ProductsOfCartOrder> ProductsOfCarts { get; set; }
-        
+        public DbSet<ProductsOfCartOrder> ProductsOfCartOrders { get; set; }
+
         public int SaveChanges()
         {
             int number = this.SaveChanges(true);

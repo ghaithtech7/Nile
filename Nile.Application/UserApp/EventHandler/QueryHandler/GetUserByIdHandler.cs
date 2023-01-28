@@ -1,8 +1,4 @@
-﻿
-using AutoMapper;
-using MediatR;
-using Nile.Application.DtoModels;
-using Nile.Application.UserApplication.Queries;
+﻿using Nile.Application.UserApplication.Queries;
 using Nile.Application.UserServicves;
 using Nile.Domain.EntityModel;
 

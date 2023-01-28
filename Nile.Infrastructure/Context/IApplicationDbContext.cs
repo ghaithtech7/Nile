@@ -17,7 +17,7 @@ namespace Nile.Infrastructure.Context
         DbSet<ShippingDetail> ShippingDetails { get; set; }
         DbSet<PaymentDetail> PaymentDetails { get; set; }
         DbSet<CartOrder> CartOrders { get; set; }
-        DbSet<ProductsOfCartOrder> ProductsOfCarts { get; set; }
+        DbSet<ProductsOfCartOrder> ProductsOfCartOrders { get; set; }
 
         #endregion
 

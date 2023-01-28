@@ -1,4 +1,4 @@
-﻿global using MediatR;
+﻿using Nile.Application.Services.CartServices;
 using Nile.Application.UserApplication.Commands;
 using Nile.Application.UserServicves;
 using Nile.Domain.EntityModel;
@@ -8,10 +8,14 @@ namespace Nile.Application.UserApplication.EventHandler.CommandHandler
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserBasicDto>
     {
         private readonly IUserServices _userServices;
+        private readonly ICartServices _cartServices;
         private readonly IMapper _mapper;
-        public CreateUserHandler(IUserServices userServices, IMapper mapper)
+        public CreateUserHandler(IUserServices userServices,
+                                 ICartServices cartServices,
+                                 IMapper mapper)
         {
             _userServices = userServices;
+            _cartServices = cartServices;
             _mapper = mapper;
         }
 
@@ -30,6 +34,19 @@ namespace Nile.Application.UserApplication.EventHandler.CommandHandler
             {
                 return null;
             }
+
+            /*Default Role*/
+            UserRole newRole = new UserRole();
+            newRole.UserId = userRegistered.UserId;
+            newRole.RoleId = 2;
+            await _userServices.UpdateUser(newRole);
+
+            /*User Cart*/
+            CartOrder cart = new CartOrder();
+            cart.UserId = userRegistered.UserId;
+            cart.Date = DateTime.UtcNow;
+            await _cartServices.CreateCartOrder(cart);
+
             UserBasicDto resultUser = new UserBasicDto();
             resultUser = _mapper.Map<UserBasicDto>(userRegistered);
 

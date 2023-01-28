@@ -87,7 +87,11 @@ namespace Nile.Application.UserServicves
                 User user = GetUserByEmail(email);
                 var userRole = _context.UserRoles.Where(a => a.UserId == user.UserId)
                     .Include(b => b.Role).FirstOrDefault();
-                
+                string userRoleResult = "Customer";
+                if(userRole != null)
+                {
+                    userRoleResult = userRole.Role.RoleName.ToString();
+                }
                 DateTime now = DateTime.UtcNow;
 
                 var issuer = _config["Jwt:Issuer"];
@@ -102,7 +106,7 @@ namespace Nile.Application.UserServicves
                                 new Claim("UserId", user.UserId.ToString()),
                                 new Claim(ClaimTypes.NameIdentifier, user.UserName),
                                 new Claim(ClaimTypes.Email, email),
-                                new Claim(ClaimTypes.Role, userRole.Role.RoleName.ToString())
+                                new Claim(ClaimTypes.Role, userRoleResult)
                             }),
                     Expires = DateTime.UtcNow.AddMinutes(5),
                     Issuer = issuer,

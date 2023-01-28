@@ -17,7 +17,7 @@ namespace Nile.Application.UserApp.EventHandler.CommandHandler
 
         public async Task<UserRole> Handle(UpdateUserRoleCommand request, CancellationToken cancellationToken)
         {
-            var theRole =await _userServices.GetRoleByRoleName(request.RoleName);
+            var theRole = await _userServices.GetRoleByRoleName(request.RoleName);
             UserRole newRole = new UserRole();
             newRole.UserId = request.UserId;
             newRole.RoleId = theRole.RoleId;

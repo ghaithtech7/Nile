@@ -7,6 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Nile.Application.AutoMapper;
+using Nile.Application.Services.CartServices;
+using Nile.Application.Services.ContentFileServices;
+using Nile.Application.Services.OrderServices;
+using Nile.Application.Services.PaymentServices;
+using Nile.Application.Services.ProductServices;
 using Nile.Application.UserApplication.EventHandler.QueryHandler;
 using Nile.Application.UserServicves;
 using Nile.Infrastructure.Context;
@@ -88,6 +93,11 @@ builder.Services.AddScoped<Mediator>();
 
 
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<ICartServices, CartServices>();
+builder.Services.AddScoped<IOrderServices, OrderServices>();
+builder.Services.AddScoped<IContentFileServices, ContentFileServices>();
+builder.Services.AddScoped<IPaymentServices, PaymentServices>();
+builder.Services.AddScoped<IProductServies, ProductServices>();
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));

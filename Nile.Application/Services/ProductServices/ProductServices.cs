@@ -27,10 +27,11 @@ namespace Nile.Application.Services.ProductServices
             }
         }
 
-        public async Task<int> DeleteProduct(Product product)
+        public async Task<int> DeleteProduct(int productId)
         {
             try
             {
+                Product product = await GetProductById(productId);
                 _context.Products.Remove(product);
                 int result = await _context.SaveChangesAsync();
                 return result;

@@ -27,10 +27,11 @@ namespace Nile.Application.Services.OrderServices
             }
         }
 
-        public async Task<int> DeleteOrder(Order order)
+        public async Task<int> DeleteOrder(int orderId)
         {
             try
             {
+                Order order = await GetOrderById(orderId);
                 _context.Orders.Remove(order);
                 int result = await _context.SaveChangesAsync();
                 return result;
@@ -42,11 +43,14 @@ namespace Nile.Application.Services.OrderServices
             }
         }
 
-        public async Task<List<Order>> GetAllOrders()
+        public async Task<List<Order>> GetAllOrders(int userId)
         {
             try
             {
-                List<Order> orders = await _context.Orders.ToListAsync();
+                List<Order> orders = await _context.Orders
+                    .Where(x => x.UserId == userId)
+                                .Include(x => x.ProductsOfOrders)
+                                .ToListAsync();
                 return orders;
             }
             catch (Exception)
@@ -60,7 +64,9 @@ namespace Nile.Application.Services.OrderServices
         {
             try
             {
-                Order result = await _context.Orders.FirstOrDefaultAsync();
+                Order? result = await _context.Orders
+                            .Include(x => x.ProductsOfOrders)
+                            .FirstOrDefaultAsync();
                 return result;
             }
             catch (Exception)

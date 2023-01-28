@@ -28,7 +28,7 @@ namespace Nile.Application.Controllers
         {
             string windowsAuth = HttpContext.User.Identity.Name;
             LoginCredentialQuery query = new LoginCredentialQuery(email, password, windowsAuth);
-            var result = _mediatR.Send(query);
+            var result = await _mediatR.Send(query);
             if(result == null)
             {
                 return NotFound(email);

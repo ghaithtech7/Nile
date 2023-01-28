@@ -83,16 +83,15 @@ namespace Nile.Infrastructure.Migrations
                 name: "CartOrders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CartId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CartId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartOrders", x => x.Id);
+                    table.PrimaryKey("PK_CartOrders", x => x.CartId);
                     table.ForeignKey(
                         name: "FK_CartOrders_Users_UserId",
                         column: x => x.UserId,
@@ -176,17 +175,17 @@ namespace Nile.Infrastructure.Migrations
                     ProductsOfCartId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CartId = table.Column<int>(type: "int", nullable: true),
-                    CartOrderId = table.Column<int>(type: "int", nullable: false),
+                    CartOrderCartId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductsOfCarts", x => x.ProductsOfCartId);
                     table.ForeignKey(
-                        name: "FK_ProductsOfCarts_CartOrders_CartOrderId",
-                        column: x => x.CartOrderId,
+                        name: "FK_ProductsOfCarts_CartOrders_CartOrderCartId",
+                        column: x => x.CartOrderCartId,
                         principalTable: "CartOrders",
-                        principalColumn: "Id",
+                        principalColumn: "CartId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductsOfCarts_Products_ProductId",
@@ -315,9 +314,9 @@ namespace Nile.Infrastructure.Migrations
                 filter: "[FileId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductsOfCarts_CartOrderId",
+                name: "IX_ProductsOfCarts_CartOrderCartId",
                 table: "ProductsOfCarts",
-                column: "CartOrderId");
+                column: "CartOrderCartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsOfCarts_ProductId",

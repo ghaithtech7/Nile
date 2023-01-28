@@ -9,5 +9,11 @@ namespace Nile.Application.Services.CartServices
         Task<int> DeleteCartOrder(CartOrder cartOrder);
         Task<CartOrder> CreateCartOrder(CartOrder cartOrder);
         Task UpdateCartOrder(CartOrder cartOrder);
+        Task AddAllProductsToCart(List<int> allProductId);
+
+        Task<int> DeleteAllProductsFromCart(int cartId);
+        Task<int> DeleteSingleProductFromCart(int cartId, int productId);
+        Task<Product> AddSingleProductToCart(int cartId, int productId);
+        Task<List<Product>> GetAllProductsInCart(int cartId);
     }
 }

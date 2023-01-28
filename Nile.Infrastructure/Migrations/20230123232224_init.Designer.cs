@@ -12,7 +12,7 @@ using Nile.Infrastructure.Context;
 namespace Nile.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230121144231_init")]
+    [Migration("20230123232224_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,14 +26,11 @@ namespace Nile.Infrastructure.Migrations
 
             modelBuilder.Entity("Nile.Domain.EntityModel.CartOrder", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -44,7 +41,7 @@ namespace Nile.Infrastructure.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CartId");
 
                     b.HasIndex("UserId");
 
@@ -225,7 +222,7 @@ namespace Nile.Infrastructure.Migrations
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CartOrderId")
+                    b.Property<int>("CartOrderCartId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductId")
@@ -233,7 +230,7 @@ namespace Nile.Infrastructure.Migrations
 
                     b.HasKey("ProductsOfCartId");
 
-                    b.HasIndex("CartOrderId");
+                    b.HasIndex("CartOrderCartId");
 
                     b.HasIndex("ProductId");
 
@@ -446,7 +443,7 @@ namespace Nile.Infrastructure.Migrations
                 {
                     b.HasOne("Nile.Domain.EntityModel.CartOrder", "CartOrder")
                         .WithMany("ProductsOfCartOrders")
-                        .HasForeignKey("CartOrderId")
+                        .HasForeignKey("CartOrderCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
